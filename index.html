@@ -19,7 +19,7 @@
 </head>
 <body class="particle-bg-parent">
 
-    <!-- Background Bubble & Particle Animation Canvas -->
+    <!-- Background Canvas -->
     <canvas id="particleCanvas" class="position-fixed inset-0 pointer-events-none"></canvas>
 
     <div class="typing-app-container d-flex flex-column justify-content-between min-vh-100 p-3 p-md-4 position-relative z-2">
@@ -75,12 +75,12 @@
 
                     <div class="vr bg-secondary opacity-25"></div>
 
-                    <!-- Time Selectors with Custom Time Button -->
+                    <!-- Time Selectors -->
                     <div class="d-flex align-items-center gap-1 mode-selector" id="timeOptions">
                         <button class="btn btn-sm time-btn active" data-val="15">15s</button>
                         <button class="btn btn-sm time-btn" data-val="30">30s</button>
                         <button class="btn btn-sm time-btn" data-val="60">60s</button>
-                        <button class="btn btn-sm time-btn" id="customTimeBtn" title="Set Custom Time"><i class="fa-solid fa-clock me-1"></i> Custom</button>
+                        <button class="btn btn-sm time-btn" id="customTimeBtn" data-bs-toggle="modal" data-bs-target="#customTimeModal" title="Set Custom Time"><i class="fa-solid fa-clock me-1"></i> Custom</button>
                     </div>
 
                     <div class="d-flex align-items-center gap-1 mode-selector d-none" id="wordOptions">
@@ -126,7 +126,7 @@
 
                 <input type="text" id="hiddenInput" class="position-absolute opacity-0 pointer-events-none" autocomplete="off" autocapitalize="off" spellcheck="false">
 
-                <!-- Fixed Bengali Wrapping & Scrolling Container -->
+                <!-- Auto-scrolling Display Box -->
                 <div class="words-display font-monospace" id="wordsDisplay"></div>
 
                 <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top border-secondary opacity-80">
@@ -199,6 +199,28 @@
         <footer class="app-footer text-center py-2 text-muted small">
             <p class="mb-0">TypeZenith Ultra Pro++ &copy; 2026 &bull; Developed for MOTTALAB MIA</p>
         </footer>
+    </div>
+
+    <!-- Ultra-Modern Custom Time Popup Modal -->
+    <div class="modal fade" id="customTimeModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-sm">
+            <div class="modal-content rounded-4 border-0 p-3 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold fs-6"><i class="fa-solid fa-stopwatch text-accent me-2"></i> Custom Duration</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-3">
+                    <label class="form-label text-muted small mb-1">Test duration in seconds:</label>
+                    <div class="input-group">
+                        <input type="number" class="form-control rounded-3 shadow-none bg-secondary text-main border-secondary" id="customTimeInput" min="5" max="3600" value="45" placeholder="e.g. 45">
+                        <span class="input-group-text bg-secondary text-muted border-secondary">sec</span>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary w-100 rounded-pill fw-semibold" id="applyCustomTimeBtn" data-bs-dismiss="modal">Set Duration</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Custom Text Modal -->
