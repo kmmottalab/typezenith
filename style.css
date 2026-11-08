@@ -45,6 +45,8 @@ body {
 
 body.lang-bn {
     font-family: 'Hind Siliguri', sans-serif;
+    font-variant-ligatures: normal;
+    text-rendering: optimizeLegibility;
 }
 
 .max-w-6f { max-width: 1020px; width: 100%; }
@@ -211,15 +213,15 @@ body.lang-bn {
     box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
-/* Auto-scrolling Display Engine & Unicode Formatting */
+/* Auto-scrolling Display & Unicode Grapheme Safety */
 .words-display {
-    font-size: 1.45rem;
-    line-height: 2.8rem;
-    height: 8.4rem; /* Shows 3 active lines cleanly */
+    font-size: 1.4rem;
+    line-height: 3rem;
+    height: 9rem;
     overflow: hidden;
     position: relative;
     user-select: none;
-    letter-spacing: 0.01em;
+    letter-spacing: 0.02em;
     z-index: 2;
     display: flex;
     flex-wrap: wrap;
@@ -230,8 +232,8 @@ body.lang-bn {
 .word {
     display: inline-flex;
     flex-wrap: nowrap;
-    margin-right: 0.6rem;
-    margin-bottom: 0.4rem;
+    margin-right: 0.65rem;
+    margin-bottom: 0.5rem;
     color: var(--text-muted);
     transition: color 0.1s;
 }
