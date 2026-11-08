@@ -43,7 +43,10 @@ body {
     overflow-x: hidden;
 }
 
-body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
+/* Bengali Font Fix & Line Spacing for Overlapping Prevention */
+body.lang-bn {
+    font-family: 'Hind Siliguri', sans-serif;
+}
 
 .max-w-6f { max-width: 1020px; width: 100%; }
 
@@ -79,7 +82,6 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     font-weight: 700;
 }
 
-/* Updated Pro Level & XP Badge styling */
 .level-xp-badge {
     background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(99, 102, 241, 0.15));
     border-color: var(--accent-color) !important;
@@ -169,6 +171,25 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     cursor: text;
 }
 
+/* Professional Watermark MOTTALAB MIA */
+.watermark-overlay {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%) rotate(-15deg);
+    font-size: 4.5rem;
+    font-weight: 800;
+    letter-spacing: 0.25em;
+    color: rgba(255, 255, 255, 0.025);
+    pointer-events: none;
+    z-index: 1;
+    white-space: nowrap;
+    text-transform: uppercase;
+}
+[data-theme="light"] .watermark-overlay {
+    color: rgba(0, 0, 0, 0.025);
+}
+
 @keyframes shakeCard {
     0%, 100% { transform: translateX(0); }
     25% { transform: translateX(-5px); }
@@ -191,27 +212,30 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
+/* Fixed Bengali Text Display & Wrapping */
 .words-display {
     font-size: 1.45rem;
-    line-height: 2.6rem;
-    height: 7.8rem;
+    line-height: 3.2rem; /* increased line height to completely prevent overlapping */
+    height: 9.6rem; /* exactly 3 well-spaced lines */
     overflow: hidden;
     position: relative;
     user-select: none;
-    letter-spacing: 0.02em;
+    letter-spacing: 0.03em;
+    z-index: 2;
 }
 
 .word {
     display: inline-block;
-    margin-right: 0.6rem;
-    margin-bottom: 0.25rem;
+    margin-right: 0.75rem;
+    margin-bottom: 0.5rem;
     color: var(--text-muted);
     transition: color 0.1s;
+    word-break: break-word;
 }
 
 .word.active { color: var(--text-main); }
 .word.error-word { text-decoration: underline wavy var(--incorrect-color); }
-.letter { position: relative; }
+.letter { position: relative; display: inline-block; }
 .letter.correct { color: var(--correct-color); }
 .letter.incorrect {
     color: var(--incorrect-color);
@@ -223,8 +247,8 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     content: '';
     position: absolute;
     left: -1px;
-    top: 15%;
-    height: 70%;
+    top: 20%;
+    height: 65%;
     width: 2px;
     background-color: var(--caret-color);
     animation: caretBlink 1s infinite;
@@ -234,8 +258,8 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     content: '';
     position: absolute;
     right: -3px;
-    top: 15%;
-    height: 70%;
+    top: 20%;
+    height: 65%;
     width: 2px;
     background-color: var(--caret-color);
     animation: caretBlink 1s infinite;
