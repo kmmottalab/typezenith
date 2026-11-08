@@ -5,7 +5,7 @@
 const CORPORA = {
     en: [
         "The quick brown fox jumps over the lazy dog. Programming is the art of algorithm design and clean implementation. Consistency and deliberate practice compound over time into mastery. Web development empowers creators to build tools that reach global audiences instantly.",
-        "Success is not final, failure is not fatal: it is the courage to continue that counts. Quality software requires patience, rigorous testing, and continuous refactoring. Clean code always looks like it was written by someone who cares.",
+        "Absence from Absent from Aloof from Abstain form Borrow from Delete from Derive from Descent from Detach from Deviate from Different from Distract from Divert from Emerge from Exclude from Exempt from Exile from Expect from Hinder from Oust from Prevent from Prohibit from Protect from Recover from Refrain from Suffer from Vary from.",
         "Innovation distinguishes between a leader and a follower. Technology is best when it brings people together and solves genuine everyday problems. Keep learning, stay curious, and build things that matter.",
         "Simplicity is the soul of efficiency. Great user interfaces feel effortless because every detail has been meticulously considered. Performance and accessibility should never be an afterthought in modern engineering."
     ],
