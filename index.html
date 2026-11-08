@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark" data-accent="blue" data-font="inter" data-cursor="default">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TypeZenith Ultra Max Pro++ Ultimate Ecosystem</title>
+    <!-- Bootstrap 5 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;600&family=Hind+Siliguri:wght@400;500;600&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;750&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- Canvas Confetti -->
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="particle-bg-parent">
+
+    <!-- Interactive Canvas Particle Background -->
+    <canvas id="particleCanvas" class="position-fixed inset-0 pointer-events-none"></canvas>
+
+    <div class="typing-app-container d-flex flex-column justify-content-between min-vh-100 p-3 p-md-4 position-relative z-2">
+        
+        <!-- Header / Navigation Bar -->
+        <header class="navbar navbar-expand-lg app-header rounded-4 px-4 py-3 mb-3">
+            <div class="container-fluid px-0">
+                <a class="navbar-brand d-flex align-items-center gap-2 fw-bold" href="#">
+                    <div class="brand-icon"><i class="fa-solid fa-rocket animate-pulse"></i></div>
+                    <span class="brand-text">Type<span class="accent-text">Zenith</span> <span class="badge ultramax-badge">ULTRA MAX PRO++</span></span>
+                </a>
+
+                <div class="d-flex align-items-center gap-2 gap-md-3 flex-wrap">
+                    <!-- Live XP / Level Badge -->
+                    <div class="d-none d-lg-flex align-items-center gap-2 px-3 py-1 rounded-pill bg-secondary border border-secondary text-xs">
+                        <i class="fa-solid fa-fire text-warning"></i>
+                        <span>Level <strong id="userLevel">1</strong></span>
+                        <span class="text-muted">|</span>
+                        <span>XP: <strong id="userXp" class="text-accent">0</strong></span>
+                    </div>
+
+                    <!-- Quick Command Palette Trigger -->
+                    <button class="btn btn-icon" id="cmdPaletteBtn" title="Command Palette (Ctrl + K)">
+                        <i class="fa-solid fa-terminal"></i>
+                    </button>
+
+                    <!-- Settings Modal Trigger -->
+                    <button class="btn btn-icon" data-bs-toggle="modal" data-bs-target="#settingsModal" title="Advanced Settings">
+                        <i class="fa-solid fa-sliders"></i>
+                    </button>
+
+                    <!-- Sound Toggle -->
+                    <button class="btn btn-icon" id="soundToggleBtn" title="Toggle Sound">
+                        <i class="fa-solid fa-volume-high" id="soundIcon"></i>
+                    </button>
+
+                    <!-- Language Switcher -->
+                    <div class="btn-group lang-switcher" role="group">
+                        <button type="button" class="btn btn-sm active" data-lang="en">EN</button>
+                        <button type="button" class="btn btn-sm" data-lang="bn">বাংলা</button>
+                    </div>
+
+                    <!-- Theme Toggle -->
+                    <button class="btn btn-icon theme-toggle" id="themeToggleBtn" title="Toggle Theme">
+                        <i class="fa-solid fa-moon"></i>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Typing Content -->
+        <main class="container my-auto max-w-6f">
+            
+            <!-- Control Bar -->
+            <div class="control-bar d-flex flex-wrap align-items-center justify-content-between p-3 rounded-4 mb-3 shadow-sm">
+                
+                <div class="d-flex align-items-center gap-3 flex-wrap">
+                    <!-- Mode Switcher -->
+                    <div class="btn-group type-mode-switcher" role="group">
+                        <button class="btn btn-sm active" data-modetype="time">Time</button>
+                        <button class="btn btn-sm" data-modetype="words">Words</button>
+                        <button class="btn btn-sm" data-modetype="quote">Quote</button>
+                        <button class="btn btn-sm" data-modetype="zen">Zen</button>
+                    </div>
+
+                    <div class="vr bg-secondary opacity-25"></div>
+
+                    <!-- Sub-Options -->
+                    <div class="d-flex align-items-center gap-1 mode-selector" id="timeOptions">
+                        <button class="btn btn-sm time-btn active" data-val="15">15s</button>
+                        <button class="btn btn-sm time-btn" data-val="30">30s</button>
+                        <button class="btn btn-sm time-btn" data-val="60">60s</button>
+                        <button class="btn btn-sm time-btn" data-val="120">120s</button>
+                    </div>
+
+                    <div class="d-flex align-items-center gap-1 mode-selector d-none" id="wordOptions">
+                        <button class="btn btn-sm word-btn active" data-val="10">10w</button>
+                        <button class="btn btn-sm word-btn" data-val="25">25w</button>
+                        <button class="btn btn-sm word-btn" data-val="50">50w</button>
+                        <button class="btn btn-sm word-btn" data-val="100">100w</button>
+                    </div>
+
+                    <div class="vr bg-secondary opacity-25"></div>
+
+                    <!-- Punctuation & Numbers Toggles -->
+                    <div class="d-flex align-items-center gap-2 modifier-toggles">
+                        <button class="btn btn-sm modifier-btn" id="punctToggle" title="Include Punctuation"><i class="fa-solid fa-at"></i></button>
+                        <button class="btn btn-sm modifier-btn" id="numToggle" title="Include Numbers"><i class="fa-solid fa-hashtag"></i></button>
+                    </div>
+                </div>
+
+                <!-- Live Quick Stats -->
+                <div class="d-flex align-items-center gap-4 live-stats">
+                    <div class="stat-item">
+                        <span class="stat-label">WPM</span>
+                        <span class="stat-value animate-number" id="liveWpm">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">ACC</span>
+                        <span class="stat-value animate-number" id="liveAcc">100%</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label" id="mainStatLabel">TIME</span>
+                        <span class="stat-value timer-display" id="timerDisplay">15</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Typing Card Box -->
+            <div class="typing-card position-relative p-4 p-md-5 rounded-4 shadow-lg" id="typingCard">
+                <!-- Focus Overlay -->
+                <div class="focus-overlay position-absolute inset-0 d-flex flex-column align-items-center justify-content-center rounded-4" id="focusOverlay">
+                    <div class="focus-box text-center p-4">
+                        <i class="fa-solid fa-keyboard fa-2x mb-3 text-accent pulse-anim"></i>
+                        <h4 class="fw-bold mb-1">Click here or start typing to unlock</h4>
+                        <p class="text-muted small mb-0">Shortcuts: <kbd>Tab</kbd> + <kbd>Enter</kbd> or <kbd>Esc</kbd> to reset</p>
+                    </div>
+                </div>
+
+                <!-- Hidden Input -->
+                <input type="text" id="hiddenInput" class="position-absolute opacity-0 pointer-events-none" autocomplete="off" autocapitalize="off" spellcheck="false">
+
+                <!-- Word Display Container -->
+                <div class="words-display font-monospace" id="wordsDisplay"></div>
+
+                <!-- Bottom Action Bar Inside Card -->
+                <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top border-secondary opacity-80">
+                    <div class="text-muted small d-flex align-items-center gap-2">
+                        <span class="badge bg-secondary text-xxs px-2 py-1" id="currentMoodBadge">Standard Mode</span>
+                        <span class="d-none d-sm-inline"><i class="fa-solid fa-circle-dot text-success me-1"></i> Live telemetry active</span>
+                    </div>
+                    <div class="d-flex align-items-center gap-2">
+                        <button class="btn btn-restart px-4 py-2 rounded-pill fw-semibold shadow-sm" id="restartBtn">
+                            <i class="fa-solid fa-rotate-right me-2"></i> Restart <span class="shortcut-badge ms-2">Esc</span>
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+        </main>
+
+        <!-- Footer -->
+        <footer class="app-footer text-center py-2 text-muted small">
+            <p class="mb-0">TypeZenith Ultra Max Pro++ &copy; 2026 &bull; Fully Alive Typing Ecosystem</p>
+        </footer>
+    </div>
+
+    <!-- Advanced Settings Modal (50+ Customization Options) -->
+    <div class="modal fade" id="settingsModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 p-4 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold"><i class="fa-solid fa-sliders text-accent me-2"></i> Ecosystem Settings & Customization</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <div class="row g-4">
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">ACCENT COLOR THEME</label>
+                            <div class="d-flex gap-2">
+                                <button class="btn btn-sm color-opt active" data-color="blue"><span class="dot bg-blue"></span> Blue</button>
+                                <button class="btn btn-sm color-opt" data-color="emerald"><span class="dot bg-emerald"></span> Emerald</button>
+                                <button class="btn btn-sm color-opt" data-color="purple"><span class="dot bg-purple"></span> Purple</button>
+                                <button class="btn btn-sm color-opt" data-color="sunset"><span class="dot bg-sunset"></span> Sunset</button>
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">TYPOGRAPHY FONT</label>
+                            <select class="form-select form-select-sm bg-secondary text-main border-secondary shadow-none" id="fontSelector">
+                                <option value="inter">Inter (Default)</option>
+                                <option value="firacode">Fira Code (Mono)</option>
+                                <option value="jetbrains">JetBrains Mono</option>
+                                <option value="poppins">Poppins (Sans)</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">KEYBOARD SOUND PACK</label>
+                            <select class="form-select form-select-sm bg-secondary text-main border-secondary shadow-none" id="soundPackSelector">
+                                <option value="mechanical">Mechanical Blue Switch</option>
+                                <option value="linear">Linear Cherry MX Red</option>
+                                <option value="typewriter">Vintage Typewriter</option>
+                                <option value="bubble">Soft Bubble Pop</option>
+                            </select>
+                        </div>
+                        <div class="col-md-6">
+                            <label class="form-label small fw-semibold text-muted">PARTICLE ANIMATION FX</label>
+                            <div class="form-check form-switch pt-1">
+                                <input class="form-check-input shadow-none" type="checkbox" id="particleToggle" checked>
+                                <label class="form-check-label small" for="particleToggle">Enable Background Live Particles</label>
+                            </div>
+                        </div>
+                        <div class="col-12">
+                            <label class="form-label small fw-semibold text-muted">CUSTOM PRACTICE PASSAGE</label>
+                            <textarea class="form-control rounded-3 shadow-none custom-textarea" id="customTextInput" rows="3" placeholder="Paste custom training text here..."></textarea>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0">
+                    <button type="button" class="btn btn-primary rounded-pill px-4 fw-semibold" data-bs-dismiss="modal" id="saveSettingsBtn">Save & Apply</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Command Palette Modal -->
+    <div class="modal fade" id="cmdModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content rounded-4 border-0 p-3 shadow-lg">
+                <input type="text" class="form-control form-control-lg bg-secondary text-main border-secondary shadow-none mb-2" id="cmdInput" placeholder="Type a command (e.g. 'restart', 'theme dark', 'time 60')...">
+                <div class="list-group list-group-flush small" id="cmdList">
+                    <button class="list-group-item list-group-item-action bg-transparent text-main border-secondary" onclick="executeCmd('restart')">🔄 Restart Test</button>
+                    <button class="list-group-item list-group-item-action bg-transparent text-main border-secondary" onclick="executeCmd('theme dark')">🌙 Switch to Dark Theme</button>
+                    <button class="list-group-item list-group-item-action bg-transparent text-main border-secondary" onclick="executeCmd('theme light')">☀️ Switch to Light Theme</button>
+                    <button class="list-group-item list-group-item-action bg-transparent text-main border-secondary" onclick="executeCmd('time 30')">⏱️ Set Time to 30s</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Results Modal with Enterprise Analytics & Achievements -->
+    <div class="modal fade" id="resultsModal" tabindex="-1" aria-labelledby="resultsModalLabel" aria-hidden="true" data-bs-backdrop="static">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content rounded-4 border-0 p-4 shadow-lg">
+                <div class="modal-header border-0 pb-0">
+                    <h5 class="modal-title fw-bold" id="resultsModalLabel"><i class="fa-solid fa-medal text-warning me-2"></i> Ultra Max Analytics & Achievements</h5>
+                    <button type="button" class="btn-close shadow-none" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body py-4">
+                    <!-- Key Metric Boxes -->
+                    <div class="row text-center g-3 mb-4">
+                        <div class="col-md-3 col-6">
+                            <div class="result-box p-3 rounded-4 shadow-sm">
+                                <span class="d-block text-muted small mb-1">NET WPM</span>
+                                <h2 class="fw-bold text-accent mb-0" id="finalWpm">0</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="result-box p-3 rounded-4 shadow-sm">
+                                <span class="d-block text-muted small mb-1">ACCURACY</span>
+                                <h2 class="fw-bold text-success mb-0" id="finalAcc">0%</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="result-box p-3 rounded-4 shadow-sm">
+                                <span class="d-block text-muted small mb-1">XP EARNED</span>
+                                <h2 class="fw-bold text-warning mb-0" id="finalXp">+0</h2>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-6">
+                            <div class="result-box p-3 rounded-4 shadow-sm">
+                                <span class="d-block text-muted small mb-1">HIGH SCORE</span>
+                                <h4 class="fw-bold text-warning mb-0 pt-1" id="highScoreWpm">0 WPM</h4>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Achievements Unlocked Alert -->
+                    <div class="alert alert-success d-none rounded-3 py-2 px-3 small d-flex align-items-center gap-2 mb-3" id="achievementAlert">
+                        <i class="fa-solid fa-trophy fa-lg"></i>
+                        <div><strong>Achievement Unlocked:</strong> <span id="unlockedBadgeName">Speed Demon!</span></div>
+                    </div>
+
+                    <!-- Chart Container -->
+                    <div class="chart-container p-3 rounded-4 mb-4" style="position: relative; height:180px;">
+                        <canvas id="wpmChart"></canvas>
+                    </div>
+
+                    <!-- History -->
+                    <div class="recent-history-section">
+                        <h6 class="fw-semibold small text-muted mb-2"><i class="fa-solid fa-clock-rotate-left me-1"></i> SESSION TELEMETRY LOGS</h6>
+                        <ul class="list-group list-group-flush small rounded-3 overflow-hidden shadow-sm" id="historyList"></ul>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 pt-0 justify-content-center">
+                    <button type="button" class="btn btn-primary rounded-pill px-5 py-2 fw-semibold shadow" id="modalRestartBtn" data-bs-dismiss="modal">
+                        <i class="fa-solid fa-rotate-right me-2"></i> Practice Again
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap 5 JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Custom JS -->
+    <script src="script.js"></script>
+</body>
+</html>
