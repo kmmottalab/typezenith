@@ -43,7 +43,7 @@ body {
     overflow-x: hidden;
 }
 
-/* Bengali Font Fix & Line Spacing for Overlapping Prevention */
+/* Hard Fix for Bengali Typography & Overlapping Prevention */
 body.lang-bn {
     font-family: 'Hind Siliguri', sans-serif;
 }
@@ -171,7 +171,7 @@ body.lang-bn {
     cursor: text;
 }
 
-/* Professional Watermark MOTTALAB MIA */
+/* Watermark MOTTALAB MIA */
 .watermark-overlay {
     position: absolute;
     top: 50%;
@@ -212,30 +212,39 @@ body.lang-bn {
     box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
-/* Fixed Bengali Text Display & Wrapping */
+/* Hard Fix for Overlapping & Text Wrapping */
 .words-display {
-    font-size: 1.45rem;
-    line-height: 3.2rem; /* increased line height to completely prevent overlapping */
-    height: 9.6rem; /* exactly 3 well-spaced lines */
+    font-size: 1.35rem;
+    line-height: 2.8rem;
+    height: 8.4rem; /* exactly 3 lines cleanly contained */
     overflow: hidden;
     position: relative;
     user-select: none;
-    letter-spacing: 0.03em;
+    letter-spacing: 0.02em;
     z-index: 2;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: flex-start;
 }
 
 .word {
-    display: inline-block;
-    margin-right: 0.75rem;
-    margin-bottom: 0.5rem;
+    display: inline-flex;
+    flex-wrap: nowrap;
+    margin-right: 0.55rem;
+    margin-bottom: 0.4rem;
     color: var(--text-muted);
     transition: color 0.1s;
-    word-break: break-word;
 }
 
 .word.active { color: var(--text-main); }
 .word.error-word { text-decoration: underline wavy var(--incorrect-color); }
-.letter { position: relative; display: inline-block; }
+
+.letter {
+    position: relative;
+    display: inline-block;
+    white-space: pre;
+}
+
 .letter.correct { color: var(--correct-color); }
 .letter.incorrect {
     color: var(--incorrect-color);
@@ -247,8 +256,8 @@ body.lang-bn {
     content: '';
     position: absolute;
     left: -1px;
-    top: 20%;
-    height: 65%;
+    top: 18%;
+    height: 64%;
     width: 2px;
     background-color: var(--caret-color);
     animation: caretBlink 1s infinite;
@@ -258,8 +267,8 @@ body.lang-bn {
     content: '';
     position: absolute;
     right: -3px;
-    top: 20%;
-    height: 65%;
+    top: 18%;
+    height: 64%;
     width: 2px;
     background-color: var(--caret-color);
     animation: caretBlink 1s infinite;
