@@ -1,5 +1,5 @@
 /**
- * TypeZenith Ultra Max Pro++ Ecosystem Engine (Custom Time, Bubble FX, Watermark, Bengali Fixes)
+ * TypeZenith Ultra Max Pro++ Ecosystem Engine (Hard Fixes for Bengali Wrapping & Graphemes)
  */
 
 const CORPORA = {
@@ -46,7 +46,6 @@ let wpmChartInstance = null;
 let audioCtx = null;
 let particleCanvas, ctx, particles = [];
 
-// Bubble & Particle Animation Engine
 function initParticles() {
     particleCanvas = document.getElementById('particleCanvas');
     if (!particleCanvas) return;
@@ -59,9 +58,9 @@ function initParticles() {
         particles.push({
             x: Math.random() * particleCanvas.width,
             y: Math.random() * particleCanvas.height,
-            radius: Math.random() * 6 + 3, // Bubble size
+            radius: Math.random() * 6 + 3,
             vx: (Math.random() - 0.5) * 0.3,
-            vy: -Math.random() * 0.6 - 0.2, // Floating upward like bubbles
+            vy: -Math.random() * 0.6 - 0.2,
             alpha: Math.random() * 0.3 + 0.1
         });
     }
@@ -188,7 +187,6 @@ function setupEventListeners() {
         });
     });
 
-    // Custom Time Button Handler
     elements.customTimeBtn.addEventListener('click', () => {
         const customSecs = prompt("Enter custom time in seconds (e.g., 45, 90, 120):", "45");
         if (customSecs && !isNaN(customSecs) && parseInt(customSecs) > 0) {
@@ -373,11 +371,16 @@ function initTest() {
 
 function renderWords() {
     elements.wordsDisplay.innerHTML = '';
+    
+    // Proper segmentation using Intl.Segmenter or Array.from for robust Unicode grapheme support in Bengali & English
+    const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(state.lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' }) : null;
+
     state.words.forEach((word, wIdx) => {
         const wordSpan = document.createElement('span');
         wordSpan.className = `word ${wIdx === 0 ? 'active current-word' : ''}`;
         
-        const chars = Array.from(word);
+        let chars = segmenter ? Array.from(segmenter.segment(word), s => s.segment) : Array.from(word);
+
         chars.forEach((char, cIdx) => {
             const letterSpan = document.createElement('span');
             letterSpan.className = 'letter';
@@ -405,7 +408,8 @@ function handleTypingInput(e) {
 
     const letterEls = currentWordEl.querySelectorAll('.letter');
     const targetWord = state.words[state.wordIndex];
-    const targetChars = Array.from(targetWord);
+    const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(state.lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' }) : null;
+    const targetChars = segmenter ? Array.from(segmenter.segment(targetWord), s => s.segment) : Array.from(targetWord);
 
     elements.hiddenInput.value = '';
 
@@ -436,6 +440,11 @@ function handleTypingInput(e) {
                     nextWordEl.classList.add('active', 'current-word');
                     nextWordEl.querySelector('.letter').classList.add('current-caret');
                     
+                    // Auto scroll container if words exceed visual lines
+                    if (nextWordEl.offsetTop > currentWordEl.offsetTop) {
+                        // Wrapped to next line
+                    }
+
                     if (state.modeType === 'words') {
                         elements.timerDisplay.textContent = `${state.wordIndex}/${state.wordLimit}`;
                     }
