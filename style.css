@@ -1,11 +1,11 @@
 /* ==========================================
-   TypeZenith Ultra Max Pro++ Ecosystem CSS
+   TypeZenith Ultra Max 100+ Pro Ecosystem CSS
    ========================================== */
 
 :root {
     --bg-primary: #04060b;
     --bg-secondary: #0a0e1a;
-    --bg-card: rgba(10, 14, 26, 0.85);
+    --bg-card: rgba(10, 14, 26, 0.88);
     --border-color: rgba(255, 255, 255, 0.08);
     --text-main: #f3f4f6;
     --text-muted: #9ca3af;
@@ -29,7 +29,7 @@
 [data-theme="light"] {
     --bg-primary: #f8fafc;
     --bg-secondary: #f1f5f9;
-    --bg-card: rgba(255, 255, 255, 0.9);
+    --bg-card: rgba(255, 255, 255, 0.92);
     --border-color: rgba(0, 0, 0, 0.08);
     --text-main: #0f172a;
     --text-muted: #64748b;
@@ -47,7 +47,6 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
 
 .max-w-6f { max-width: 1020px; width: 100%; }
 
-/* Glass Header */
 .app-header {
     background: var(--bg-card);
     backdrop-filter: blur(18px);
@@ -78,10 +77,8 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     border-radius: 6px;
     vertical-align: super;
     font-weight: 700;
-    letter-spacing: 0.05em;
 }
 
-/* Buttons & Icons */
 .btn-icon {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -127,14 +124,13 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     box-shadow: 0 2px 10px var(--accent-glow);
 }
 
-/* Control Bar */
 .control-bar {
     background: var(--bg-card);
     backdrop-filter: blur(18px);
     border: 1px solid var(--border-color);
 }
 
-.mode-selector .time-btn, .mode-selector .word-btn, .modifier-btn {
+.mode-selector .time-btn, .mode-selector .word-btn, .btn-custom-text {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
     color: var(--text-muted);
@@ -146,18 +142,17 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
 }
 .mode-selector .time-btn:hover, .mode-selector .time-btn.active,
 .mode-selector .word-btn:hover, .mode-selector .word-btn.active,
-.modifier-btn.active {
+.btn-custom-text:hover {
     background: var(--accent-color);
     color: #fff;
     border-color: var(--accent-color);
 }
 
 .live-stats .stat-item { display: flex; flex-direction: column; align-items: flex-end; }
-.live-stats .stat-label { font-size: 0.65rem; font-weight: 600; letter-spacing: 0.05em; color: var(--text-muted); }
+.live-stats .stat-label { font-size: 0.65rem; font-weight: 600; color: var(--text-muted); }
 .live-stats .stat-value { font-size: 1.25rem; font-weight: 700; font-family: 'Fira Code', monospace; color: var(--accent-color); }
 .timer-display { color: var(--text-main) !important; }
 
-/* Typing Card */
 .typing-card {
     background: var(--bg-card);
     backdrop-filter: blur(24px);
@@ -189,11 +184,10 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     box-shadow: 0 20px 40px rgba(0,0,0,0.35);
 }
 
-/* Words Display */
 .words-display {
     font-size: 1.45rem;
     line-height: 2.6rem;
-    height: 7.8rem; /* exactly 3 lines */
+    height: 7.8rem;
     overflow: hidden;
     position: relative;
     user-select: none;
@@ -209,6 +203,7 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
 }
 
 .word.active { color: var(--text-main); }
+.word.error-word { text-decoration: underline wavy var(--incorrect-color); }
 .letter { position: relative; }
 .letter.correct { color: var(--correct-color); }
 .letter.incorrect {
@@ -217,7 +212,6 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     border-radius: 3px;
 }
 
-/* Caret */
 .letter.current-caret::before {
     content: '';
     position: absolute;
@@ -242,7 +236,6 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
 
 @keyframes caretBlink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
-/* Restart Button */
 .btn-restart {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -265,7 +258,6 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     font-family: 'Fira Code', monospace;
 }
 
-/* Modals */
 .modal-content {
     background: var(--bg-primary) !important;
     color: var(--text-main) !important;
