@@ -1,11 +1,11 @@
 /**
- * TypeZenith Ultra Max Pro++ Ecosystem Engine (Hard Fixes for Bengali Wrapping & Graphemes)
+ * TypeZenith Ultra Max Pro++ Ecosystem Engine (Auto-Scroll & Unicode Grapheme Engine)
  */
 
 const CORPORA = {
     en: [
         "The quick brown fox jumps over the lazy dog. Programming is the art of algorithm design and clean implementation. Consistency and deliberate practice compound over time into mastery. Web development empowers creators to build tools that reach global audiences instantly.",
-        "Absence from Absent from Aloof from Abstain form Borrow from Delete from Derive from Descent from Detach from Deviate from Different from Distract from Divert from Emerge from Exclude from Exempt from Exile from Expect from Hinder from Oust from Prevent from Prohibit from Protect from Recover from Refrain from Suffer from Vary from .",
+        "Success is not final, failure is not fatal: it is the courage to continue that counts. Quality software requires patience, rigorous testing, and continuous refactoring. Clean code always looks like it was written by someone who cares.",
         "Innovation distinguishes between a leader and a follower. Technology is best when it brings people together and solves genuine everyday problems. Keep learning, stay curious, and build things that matter.",
         "Simplicity is the soul of efficiency. Great user interfaces feel effortless because every detail has been meticulously considered. Performance and accessibility should never be an afterthought in modern engineering."
     ],
@@ -187,12 +187,13 @@ function setupEventListeners() {
         });
     });
 
-    elements.customTimeBtn.addEventListener('click', () => {
-        const customSecs = prompt("Enter custom time in seconds (e.g., 45, 90, 120):", "45");
-        if (customSecs && !isNaN(customSecs) && parseInt(customSecs) > 0) {
+    // Custom Time Popup Button Listener
+    elements.applyCustomTimeBtn.addEventListener('click', () => {
+        const customSecs = parseInt(elements.customTimeInput.value);
+        if (customSecs && customSecs > 0) {
             elements.timeButtons.forEach(b => b.classList.remove('active'));
             elements.customTimeBtn.classList.add('active');
-            state.timeLimit = parseInt(customSecs);
+            state.timeLimit = customSecs;
             resetTest();
         }
     });
@@ -255,6 +256,8 @@ function getDomElements() {
         wordOptions: document.getElementById('wordOptions'),
         timeButtons: document.querySelectorAll('.time-btn'),
         customTimeBtn: document.getElementById('customTimeBtn'),
+        customTimeInput: document.getElementById('customTimeInput'),
+        applyCustomTimeBtn: document.getElementById('applyCustomTimeBtn'),
         wordButtons: document.querySelectorAll('.word-btn'),
         mainStatLabel: document.getElementById('mainStatLabel'),
         timerDisplay: document.getElementById('timerDisplay'),
@@ -369,18 +372,24 @@ function initTest() {
     renderWords();
 }
 
+// Unicode Grapheme Segmenter Engine
+function getGraphemes(text) {
+    if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+        const segmenter = new Intl.Segmenter(state.lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' });
+        return Array.from(segmenter.segment(text), s => s.segment);
+    }
+    return Array.from(text);
+}
+
 function renderWords() {
     elements.wordsDisplay.innerHTML = '';
-    
-    // Proper segmentation using Intl.Segmenter or Array.from for robust Unicode grapheme support in Bengali & English
-    const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(state.lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' }) : null;
+    elements.wordsDisplay.scrollTop = 0;
 
     state.words.forEach((word, wIdx) => {
         const wordSpan = document.createElement('span');
         wordSpan.className = `word ${wIdx === 0 ? 'active current-word' : ''}`;
         
-        let chars = segmenter ? Array.from(segmenter.segment(word), s => s.segment) : Array.from(word);
-
+        const chars = getGraphemes(word);
         chars.forEach((char, cIdx) => {
             const letterSpan = document.createElement('span');
             letterSpan.className = 'letter';
@@ -408,8 +417,7 @@ function handleTypingInput(e) {
 
     const letterEls = currentWordEl.querySelectorAll('.letter');
     const targetWord = state.words[state.wordIndex];
-    const segmenter = typeof Intl !== 'undefined' && Intl.Segmenter ? new Intl.Segmenter(state.lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' }) : null;
-    const targetChars = segmenter ? Array.from(segmenter.segment(targetWord), s => s.segment) : Array.from(targetWord);
+    const targetChars = getGraphemes(targetWord);
 
     elements.hiddenInput.value = '';
 
@@ -440,9 +448,9 @@ function handleTypingInput(e) {
                     nextWordEl.classList.add('active', 'current-word');
                     nextWordEl.querySelector('.letter').classList.add('current-caret');
                     
-                    // Auto scroll container if words exceed visual lines
+                    // Smooth Auto-Scrolling Engine to bring remaining text into view
                     if (nextWordEl.offsetTop > currentWordEl.offsetTop) {
-                        // Wrapped to next line
+                        elements.wordsDisplay.scrollTop = nextWordEl.offsetTop - elements.wordsDisplay.offsetTop;
                     }
 
                     if (state.modeType === 'words') {
@@ -509,6 +517,10 @@ function handleSpecialKeys(e) {
             const prevLetters = prevWordEl.querySelectorAll('.letter');
             state.charIndex = prevLetters.length;
             prevWordEl.classList.add('at-end');
+
+            if (prevWordEl.offsetTop < currentWordEl.offsetTop) {
+                elements.wordsDisplay.scrollTop = prevWordEl.offsetTop - elements.wordsDisplay.offsetTop;
+            }
         }
         e.preventDefault();
         updateLiveStats();
