@@ -1,5 +1,5 @@
 /**
- * TypeZenith Ultra Max Pro++ Ecosystem Engine (Auto-Scroll & Unicode Grapheme Engine)
+ * TypeZenith Ultra Max Pro++ Ecosystem Engine (Bijoy / Unicode Grapheme Fixes)
  */
 
 const CORPORA = {
@@ -187,7 +187,6 @@ function setupEventListeners() {
         });
     });
 
-    // Custom Time Popup Button Listener
     elements.applyCustomTimeBtn.addEventListener('click', () => {
         const customSecs = parseInt(elements.customTimeInput.value);
         if (customSecs && customSecs > 0) {
@@ -350,6 +349,9 @@ function initTest() {
 
     let rawText = state.customText || CORPORA[state.lang][Math.floor(Math.random() * CORPORA[state.lang].length)];
     
+    // Normalize text NFC for perfect Unicode & Bijoy rendering
+    rawText = rawText.normalize('NFC');
+
     state.words = rawText.trim().split(/\s+/);
     if (state.modeType === 'words' && state.words.length > state.wordLimit) {
         state.words = state.words.slice(0, state.wordLimit);
@@ -372,13 +374,14 @@ function initTest() {
     renderWords();
 }
 
-// Unicode Grapheme Segmenter Engine
+// Advanced Unicode Grapheme Segmenter with NFC Normalization
 function getGraphemes(text) {
+    const normalized = text.normalize('NFC');
     if (typeof Intl !== 'undefined' && Intl.Segmenter) {
         const segmenter = new Intl.Segmenter(state.lang === 'bn' ? 'bn' : 'en', { granularity: 'grapheme' });
-        return Array.from(segmenter.segment(text), s => s.segment);
+        return Array.from(segmenter.segment(normalized), s => s.segment);
     }
-    return Array.from(text);
+    return Array.from(normalized);
 }
 
 function renderWords() {
@@ -402,7 +405,7 @@ function renderWords() {
 }
 
 function handleTypingInput(e) {
-    const inputVal = e.target.value;
+    const inputVal = e.target.value.normalize('NFC');
     if (!state.isPlaying && inputVal.length > 0) {
         startTimer();
         elements.focusOverlay.classList.add('hidden');
@@ -448,7 +451,6 @@ function handleTypingInput(e) {
                     nextWordEl.classList.add('active', 'current-word');
                     nextWordEl.querySelector('.letter').classList.add('current-caret');
                     
-                    // Smooth Auto-Scrolling Engine to bring remaining text into view
                     if (nextWordEl.offsetTop > currentWordEl.offsetTop) {
                         elements.wordsDisplay.scrollTop = nextWordEl.offsetTop - elements.wordsDisplay.offsetTop;
                     }
