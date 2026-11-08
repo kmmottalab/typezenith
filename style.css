@@ -1,5 +1,5 @@
 /* ==========================================
-   TypeZenith Ultra Max 100+ Pro Ecosystem CSS
+   TypeZenith Ultra Max Pro++ Ecosystem CSS
    ========================================== */
 
 :root {
@@ -79,6 +79,13 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     font-weight: 700;
 }
 
+/* Updated Pro Level & XP Badge styling */
+.level-xp-badge {
+    background: linear-gradient(135deg, rgba(56, 189, 248, 0.15), rgba(99, 102, 241, 0.15));
+    border-color: var(--accent-color) !important;
+    box-shadow: 0 0 15px var(--accent-glow);
+}
+
 .btn-icon {
     background: var(--bg-secondary);
     border: 1px solid var(--border-color);
@@ -153,7 +160,7 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
 .live-stats .stat-value { font-size: 1.25rem; font-weight: 700; font-family: 'Fira Code', monospace; color: var(--accent-color); }
 .timer-display { color: var(--text-main) !important; }
 
-.typing-card {
+.typing-card, .result-page-card {
     background: var(--bg-card);
     backdrop-filter: blur(24px);
     border: 1px solid var(--border-color);
@@ -277,13 +284,10 @@ body.lang-bn { font-family: 'Hind Siliguri', sans-serif; }
     box-shadow: 0 0 0 3px var(--accent-glow) !important;
 }
 
-#historyList .list-group-item {
-    background: var(--bg-secondary);
-    color: var(--text-main);
-    border-color: var(--border-color);
-}
-
 .text-xxs { font-size: 0.65rem; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+.animate-fade-in { animation: fadeIn 0.4s ease forwards; }
 
 @keyframes pulse { 0% { transform: scale(1); } 50% { transform: scale(1.1); } 100% { transform: scale(1); } }
 .pulse-anim { animation: pulse 1.5s infinite; }
