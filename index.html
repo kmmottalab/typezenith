@@ -19,6 +19,7 @@
 </head>
 <body class="particle-bg-parent">
 
+    <!-- Background Bubble & Particle Animation Canvas -->
     <canvas id="particleCanvas" class="position-fixed inset-0 pointer-events-none"></canvas>
 
     <div class="typing-app-container d-flex flex-column justify-content-between min-vh-100 p-3 p-md-4 position-relative z-2">
@@ -60,7 +61,7 @@
             </div>
         </header>
 
-        <!-- Main Typing View (Active by default) -->
+        <!-- Main Typing View -->
         <main class="container my-auto max-w-6f view-section" id="typingView">
             
             <!-- Control Bar -->
@@ -75,10 +76,12 @@
 
                     <div class="vr bg-secondary opacity-25"></div>
 
+                    <!-- Time Selectors with Custom Time Button -->
                     <div class="d-flex align-items-center gap-1 mode-selector" id="timeOptions">
                         <button class="btn btn-sm time-btn active" data-val="15">15s</button>
                         <button class="btn btn-sm time-btn" data-val="30">30s</button>
                         <button class="btn btn-sm time-btn" data-val="60">60s</button>
+                        <button class="btn btn-sm time-btn" id="customTimeBtn" title="Set Custom Time"><i class="fa-solid fa-clock me-1"></i> Custom</button>
                     </div>
 
                     <div class="d-flex align-items-center gap-1 mode-selector d-none" id="wordOptions">
@@ -110,8 +113,11 @@
                 </div>
             </div>
 
-            <!-- Typing Card -->
-            <div class="typing-card position-relative p-4 p-md-5 rounded-4 shadow-lg" id="typingCard">
+            <!-- Typing Card with MOTTALAB MIA Watermark -->
+            <div class="typing-card position-relative p-4 p-md-5 rounded-4 shadow-lg overflow-hidden" id="typingCard">
+                <!-- Watermark -->
+                <div class="watermark-overlay">MOTTALAB MIA</div>
+
                 <div class="focus-overlay position-absolute inset-0 d-flex flex-column align-items-center justify-content-center rounded-4" id="focusOverlay">
                     <div class="focus-box text-center p-4">
                         <i class="fa-solid fa-keyboard fa-2x mb-3 text-accent pulse-anim"></i>
@@ -122,6 +128,7 @@
 
                 <input type="text" id="hiddenInput" class="position-absolute opacity-0 pointer-events-none" autocomplete="off" autocapitalize="off" spellcheck="false">
 
+                <!-- Fixed Bengali & Overflow Display Container -->
                 <div class="words-display font-monospace" id="wordsDisplay"></div>
 
                 <div class="d-flex align-items-center justify-content-between mt-4 pt-3 border-top border-secondary opacity-80">
@@ -136,9 +143,11 @@
             </div>
         </main>
 
-        <!-- New Dedicated Result View (Replaces Popup) -->
+        <!-- Dedicated Result View -->
         <main class="container my-auto max-w-6f view-section d-none" id="resultView">
-            <div class="result-page-card p-4 p-md-5 rounded-4 shadow-lg animate-fade-in">
+            <div class="result-page-card p-4 p-md-5 rounded-4 shadow-lg animate-fade-in position-relative overflow-hidden">
+                <div class="watermark-overlay">MOTTALAB MIA</div>
+
                 <div class="d-flex align-items-center justify-content-between mb-4 pb-3 border-bottom border-secondary">
                     <div>
                         <h3 class="fw-bold mb-0"><i class="fa-solid fa-trophy text-warning me-2"></i> Test Analytics & Summary</h3>
@@ -190,7 +199,7 @@
         </main>
 
         <footer class="app-footer text-center py-2 text-muted small">
-            <p class="mb-0">TypeZenith Ultra Max Pro++ &copy; 2026 &bull; Ultimate Edition</p>
+            <p class="mb-0">TypeZenith Ultra Pro++ &copy; 2026 &bull; Developed for MOTTALAB MIA</p>
         </footer>
     </div>
 
