@@ -1,5 +1,5 @@
 /**
- * TypeZenith Ultra Max Pro++ Ecosystem Engine (Dedicated Result View & Bengali Fixes)
+ * TypeZenith Ultra Max Pro++ Ecosystem Engine (Custom Time, Bubble FX, Watermark, Bengali Fixes)
  */
 
 const CORPORA = {
@@ -46,6 +46,7 @@ let wpmChartInstance = null;
 let audioCtx = null;
 let particleCanvas, ctx, particles = [];
 
+// Bubble & Particle Animation Engine
 function initParticles() {
     particleCanvas = document.getElementById('particleCanvas');
     if (!particleCanvas) return;
@@ -54,14 +55,14 @@ function initParticles() {
     window.addEventListener('resize', resizeCanvas);
 
     particles = [];
-    for (let i = 0; i < 30; i++) {
+    for (let i = 0; i < 40; i++) {
         particles.push({
             x: Math.random() * particleCanvas.width,
             y: Math.random() * particleCanvas.height,
-            radius: Math.random() * 2 + 1,
-            vx: (Math.random() - 0.5) * 0.4,
-            vy: (Math.random() - 0.5) * 0.4,
-            alpha: Math.random() * 0.4 + 0.1
+            radius: Math.random() * 6 + 3, // Bubble size
+            vx: (Math.random() - 0.5) * 0.3,
+            vy: -Math.random() * 0.6 - 0.2, // Floating upward like bubbles
+            alpha: Math.random() * 0.3 + 0.1
         });
     }
     animateParticles();
@@ -81,16 +82,20 @@ function animateParticles() {
     particles.forEach(p => {
         p.x += p.vx;
         p.y += p.vy;
+
+        if (p.y < -10) {
+            p.y = particleCanvas.height + 10;
+            p.x = Math.random() * particleCanvas.width;
+        }
         if (p.x < 0) p.x = particleCanvas.width;
         if (p.x > particleCanvas.width) p.x = 0;
-        if (p.y < 0) p.y = particleCanvas.height;
-        if (p.y > particleCanvas.height) p.y = 0;
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.radius, 0, Math.PI * 2);
-        ctx.fillStyle = accentColor;
+        ctx.strokeStyle = accentColor;
+        ctx.lineWidth = 1.5;
         ctx.globalAlpha = p.alpha;
-        ctx.fill();
+        ctx.stroke();
     });
     requestAnimationFrame(animateParticles);
 }
@@ -174,12 +179,24 @@ function setupEventListeners() {
     });
 
     elements.timeButtons.forEach(btn => {
+        if (btn.id === 'customTimeBtn') return;
         btn.addEventListener('click', (e) => {
             elements.timeButtons.forEach(b => b.classList.remove('active'));
             e.target.classList.add('active');
             state.timeLimit = parseInt(e.target.getAttribute('data-val'));
             resetTest();
         });
+    });
+
+    // Custom Time Button Handler
+    elements.customTimeBtn.addEventListener('click', () => {
+        const customSecs = prompt("Enter custom time in seconds (e.g., 45, 90, 120):", "45");
+        if (customSecs && !isNaN(customSecs) && parseInt(customSecs) > 0) {
+            elements.timeButtons.forEach(b => b.classList.remove('active'));
+            elements.customTimeBtn.classList.add('active');
+            state.timeLimit = parseInt(customSecs);
+            resetTest();
+        }
     });
 
     elements.wordButtons.forEach(btn => {
@@ -239,6 +256,7 @@ function getDomElements() {
         timeOptions: document.getElementById('timeOptions'),
         wordOptions: document.getElementById('wordOptions'),
         timeButtons: document.querySelectorAll('.time-btn'),
+        customTimeBtn: document.getElementById('customTimeBtn'),
         wordButtons: document.querySelectorAll('.word-btn'),
         mainStatLabel: document.getElementById('mainStatLabel'),
         timerDisplay: document.getElementById('timerDisplay'),
@@ -314,7 +332,6 @@ function updateUserXpDisplay() {
 }
 
 function initTest() {
-    // Show typing view and hide result view
     elements.typingView.classList.remove('d-none');
     elements.resultView.classList.add('d-none');
 
@@ -557,7 +574,6 @@ function endTest() {
     localStorage.setItem('typezenith_level', state.level);
     updateUserXpDisplay();
 
-    // Switch view to dedicated result page instead of popup
     elements.typingView.classList.add('d-none');
     elements.resultView.classList.remove('d-none');
 
